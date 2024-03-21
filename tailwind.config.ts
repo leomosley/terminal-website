@@ -13,6 +13,12 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontFamily: {
+        'mono': ['Roboto Mono', 'monospace']
+      },
+      colors: {
+        'purple': '#7e58c6'
+      }
     },
   },
   plugins: [],
