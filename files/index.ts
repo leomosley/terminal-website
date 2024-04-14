@@ -1,7 +1,7 @@
 'use server';
 export interface File {
   filename: string; 
-  content: string; 
+  content?: string; 
 }
 
 export interface Files {
@@ -135,28 +135,6 @@ export async function getShowcaseRepos() {
   }
 }
 
-export async function getRepo(name: string) {
-  try {
-    const res = await fetch(`https://api.github.com/repos/leomosley/${name}`);
-    if (!res.ok) {
-      throw new Error('Failed to fetch repos');
-    }
-    const data = await res.json();
-    return data as Repo;
-  } catch (error) {
-    console.error('Error fetching repos:', error);
-  }
-}  
-
-export async function getRepoReadme(repo: Repo) {
-  const name = repo.name;
-  const branch = repo.default_branch;
-
-  const res = await fetch(`https://raw.githubusercontent.com/leomosley/${name}/${branch}/README.md`);
-  const raw = res.text();
-  return raw;
-}
-
 export async function getFiles() {
   const files: Files = {
     "~": [],
@@ -165,17 +143,12 @@ export async function getFiles() {
     "/contact": [],
   }
 
-  const showcases = await getShowcaseRepos();
-  if (showcases) {
-    for (const showcase of showcases) {
-      let filename = showcase.name;
-      let content = await getRepoReadme(showcase);
-  
-      files["/projects"].push({
-        filename: filename ?? "filename",
-        content: content ?? "No content",
-      })
-    }
+  const showcaseRepos = await getShowcaseRepos();
+  if (showcaseRepos) {
+    files["/projects"].push(...showcaseRepos.map((repo) => ({
+      filename: repo.name ?? "filename"
+    })));
   }
+
   return files;
 };

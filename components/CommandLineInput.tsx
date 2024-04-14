@@ -55,10 +55,6 @@ export default function CommandLineInput({
   const labelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
-
-  useEffect(() => {
     setDir(paths[currentPath]);
   }, [currentPath]);
 
@@ -162,7 +158,7 @@ export default function CommandLineInput({
     if (arg) {
       let filtered = files[currentPath].filter(f => f.filename === arg);
       if (filtered) {
-        window.open(`https://www.leomosley.com/projects/${arg}`, '_blank')?.focus();
+        window.open(`https://github.com/leomosley/${arg}`, '_blank')?.focus();
       } else {
         throw createError("BadArgument", "Cannot find specified file.");
       }
@@ -174,7 +170,7 @@ export default function CommandLineInput({
 
   const portfolio = (arg: string): string => {
     if (!arg) {
-      router.push('/');
+      window.open("https://www.leomosley.com", '_blank')?.focus();
       return 'Redirecting to portfolio...';
     } else {
       throw createError("BadArgument", "portfolio doesnt take any arguments.")
@@ -192,11 +188,11 @@ export default function CommandLineInput({
 
   const commands: {[key: string]: {cmd: (arg: string) => string, desc: string}} = {
     "help": {cmd: help, desc: "Lists all commands and what they do"},
-    "ls": {cmd: ls, desc: "Lists all files and sub-sdirectories in current directory"},
+    "ls": {cmd: ls, desc: "Lists all files and sub-directories in current directory"},
     "cd": {cmd: cd, desc: "Use to change directory | cd <path> | cd .. to go up a level"},
     "clear": {cmd: clear, desc: "Clears terminal"},
     "echo": {cmd: echo, desc: "Displays messages | echo <message>"},
-    "open": {cmd: open, desc: "Opens file in terminal | open <filename>"},
+    "open": {cmd: open, desc: "Opens file in terminal or github | open <filename>"},
     "portfolio": {cmd: portfolio, desc: "Opens my portfolio page"},
     "github": {cmd: github, desc: "Opens my github profile"}
   };
@@ -277,6 +273,7 @@ export default function CommandLineInput({
 
     const observer = new MutationObserver((mutations) => {
       setLabelWidth(label?.getBoundingClientRect().width || null);
+      console.log(label?.getBoundingClientRect().width || null);
     });
 
     const config = { characterData: true, subtree: true };
@@ -292,7 +289,7 @@ export default function CommandLineInput({
   return (
     <form className="flex" onSubmit={submit}>
       <div ref={labelRef}>
-        <span className="text-green-500 glow">user@leomosley.com:</span>
+        <span className="text-green-500 glow">user@terminal:</span>
         <span className="text-blue-400 glow">{currentPath}</span>
         <span className="text-teal-100 glow">$&nbsp;</span>
       </div>
@@ -310,9 +307,12 @@ export default function CommandLineInput({
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         disabled={loading}
+        autoFocus
+        autoComplete="off"
+        autoCapitalize="off"
       ></input>
       <div className="caret bg-purple"
-        style={{ left: `${(labelWidth? labelWidth : 193) + ((caretPosition ?? 0)+1) * 8.75}px` }}
+        style={{ left: `${(labelWidth ?? 142.765625) + ((caretPosition ?? 0)+1) * 8.75}px` }}
       ></div>
     </form>
   );
