@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { Files } from '@/files';
+import { Files } from '@/files/interfaces';
 
 import CommandLineInput from './CommandLineInput';
 import CommandLineOutput from './CommandLineOutput';

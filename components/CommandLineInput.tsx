@@ -2,7 +2,7 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import { Files } from "@/files";
+import { Files } from "@/files/interfaces";
 
 interface Command {
   prompt: string;
@@ -158,11 +158,15 @@ export default function CommandLineInput({
     if (arg) {
       let filtered = files[currentPath].filter(f => f.filename === arg);
       if (filtered) {
-        window.open(`https://github.com/leomosley/${arg}`, '_blank')?.focus();
+        if (currentPath == "/projects") {
+          window.open(`https://github.com/leomosley/${arg}`, '_blank')?.focus();
+          return "Opening project..."; 
+        } else {
+          return filtered[0].content ?? "No content";
+        }
       } else {
         throw createError("BadArgument", "Cannot find specified file.");
       }
-      return "Opening project..."; 
     } else {
       throw createError("BadArgument", "Provide a file to open.");
     }
