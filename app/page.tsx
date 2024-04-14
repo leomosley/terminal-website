@@ -1,13 +1,8 @@
 import React, { Suspense } from 'react';
-import { Metadata } from 'next';
 import { getFiles } from '@/utils/getFiles';
 
 import Terminal from '@/components/Terminal';
 import FallBackTerminal from '@/components/FallBackTerminal';
-    
-export const metadata: Metadata = {
-  title: 'Terminal • Leo Mosley'
-}
 
 export default async function Home() {
   const files = await getFiles();
