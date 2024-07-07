@@ -174,7 +174,7 @@ export default function CommandLineInput({
 
   const portfolio = (arg: string): string => {
     if (!arg) {
-      window.open("https://www.leomosley.com", '_blank')?.focus();
+      window.open("https://mosly.dev", '_blank')?.focus();
       return 'Redirecting to portfolio...';
     } else {
       throw createError("BadArgument", "portfolio doesnt take any arguments.")
