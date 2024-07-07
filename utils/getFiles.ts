@@ -20,7 +20,7 @@ export default function readFiles(currentPath: string) {
 
 export async function getRepos() {
   try {
-    const res = await fetch('https://api.github.com/users/leomosley/repos');
+    const res = await fetch('https://api.github.com/users/leomosley/repos', { cache: 'no-store' });
     if (!res.ok) {
       throw new Error('Failed to fetch repos');
     }
